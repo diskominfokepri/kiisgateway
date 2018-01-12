@@ -1,5 +1,6 @@
 package id.go.kepriprov.kiisgateway;
 
+
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
@@ -9,6 +10,7 @@ import id.go.kepriprov.kiisgateway.services.EntryPoint;
 public class App {
 
 	public static void main(String[] args) throws Exception {
+		
 		ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
 		context.setContextPath("/");
 
@@ -20,11 +22,11 @@ public class App {
 
 		// Tells the Jersey Servlet which REST service/class to load.
 		jerseyServlet.setInitParameter("jersey.config.server.provider.classnames", EntryPoint.class.getCanonicalName());
-
-		try {
+		
+		try {			
 			jettyServer.start();
-			jettyServer.join();
-		} finally {
+			jettyServer.join();		
+		}finally {
 			jettyServer.destroy();
 		}
 	}

@@ -3,23 +3,29 @@ package id.go.kepriprov.kiisgateway.lib;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
+
+
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 public class Database {
-	private Connection connection = null;
+	private Connection connection;
 
 	private String driverName;
 
 	private String url;
 	private PreparedStatement PreparedStatement;
+	private Statement stmt;
 
-	public Database(String serverName, String portNumber, String dbName, String Username, String Password) {
+	public Database() {
 		driverName = "com.mysql.cj.jdbc.Driver";
-
-		url = "jdbc:mysql://" + serverName + ":" + portNumber + "/" + dbName;
-		koneksi(Username, Password);
+		Configuration config = new Configuration();
+		url = "jdbc:mysql://" + config.getDBHost() + ":" + config.getDBPort() + "/" + config.getDBName();
+		koneksi(config.getDBUser(), config.getDBPassword());
 	}
 
+	
 	public boolean koneksi(String Username, String Password) {
 		try {
 			// Load the JDBC driver
@@ -84,5 +90,22 @@ public class Database {
 		SQLException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public ResultSet query(String sqlString) {
+		ResultSet rs = null;
+		try {
+			stmt = connection.createStatement();
+			rs = stmt.executeQuery(sqlString);
+		} catch (
+
+		SQLException e) {
+			e.printStackTrace();
+		}
+		return rs;
+	}
+	
+	public void closeConnection() throws Exception {
+		connection.close();
 	}
 }
