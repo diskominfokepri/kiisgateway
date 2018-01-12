@@ -34,7 +34,10 @@ public class Configuration {
 			e.printStackTrace();
 		}		
 	}
-	
+	public int getJettyPort () {
+		int port = Integer.parseInt(config.get("jetty_port"));
+		return port;
+	}
 	public String getDBHost () {
 		return config.get("db_host");
 	}

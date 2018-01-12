@@ -1,33 +1,32 @@
 package id.go.kepriprov.kiisgateway;
 
-
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import org.glassfish.jersey.server.ServerProperties;
+import org.glassfish.jersey.servlet.ServletContainer;
 
-import id.go.kepriprov.kiisgateway.services.EntryPoint;
+import id.go.kepriprov.kiisgateway.lib.Configuration;
 
 public class App {
 
 	public static void main(String[] args) throws Exception {
+		Configuration config = new Configuration();
 		
-		ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
-		context.setContextPath("/");
-
-		Server jettyServer = new Server(8080);
-		jettyServer.setHandler(context);
-
-		ServletHolder jerseyServlet = context.addServlet(org.glassfish.jersey.servlet.ServletContainer.class, "/*");
-		jerseyServlet.setInitOrder(0);
-
-		// Tells the Jersey Servlet which REST service/class to load.
-		jerseyServlet.setInitParameter("jersey.config.server.provider.classnames", EntryPoint.class.getCanonicalName());
+		Server server = new Server(config.getJettyPort());
 		
-		try {			
-			jettyServer.start();
-			jettyServer.join();		
-		}finally {
-			jettyServer.destroy();
-		}
+		ServletContextHandler context = new ServletContextHandler(server,"/*",ServletContextHandler.SESSIONS);
+		
+		ServletHolder sh = new ServletHolder(ServletContainer.class);
+		sh.setInitParameter(ServerProperties.PROVIDER_CLASSNAMES, "id.go.kepriprov.kiisgateway.services.EntryPoint");
+		sh.setInitParameter(ServerProperties.PROVIDER_SCANNING_RECURSIVE, "true");
+        sh.setInitParameter(ServerProperties.TRACING, "ALL");
+        sh.setInitParameter("jersey.config.server.tracing", "ALL");
+        sh.setInitOrder(1);
+		
+        context.addServlet(sh, "/*");
+        server.start();
+        server.join();
+		
 	}
 }
