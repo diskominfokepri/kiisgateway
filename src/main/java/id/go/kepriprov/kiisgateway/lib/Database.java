@@ -2,111 +2,68 @@ package id.go.kepriprov.kiisgateway.lib;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import org.apache.log4j.Logger;
+
 import id.go.kepriprov.kiisgateway.lib.conf.Configuration;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-
 public class Database {
+	static Logger log = Logger.getLogger(Database.class.getName());
+	
 	private Connection connection;
 
 	private String driverName;
 
 	private String url;
+	
 	private PreparedStatement PreparedStatement;
+	
 	private Statement stmt;
 
-	public Database() {
+	public Database() throws SQLException {
 		driverName = "com.mysql.cj.jdbc.Driver";
 		Configuration config = new Configuration();
 		url = "jdbc:mysql://" + config.getDBHost() + ":" + config.getDBPort() + "/" + config.getDBName();
 		koneksi(config.getDBUser(), config.getDBPassword());
-	}
-
-	
-	public boolean koneksi(String Username, String Password) {
+	}	
+	public void koneksi(String Username, String Password) {
 		try {
-			// Load the JDBC driver
-			Class.forName(driverName);
-			// Create a connection to the database
+			Class.forName(driverName);			
 			connection = DriverManager.getConnection(url, Username, Password);
-		} catch (ClassNotFoundException e) {
-			// Could not find the database driver
-			System.out.println("ClassNotFoundException : " + e.getMessage());
-			return false;
-		} catch (SQLException e) {
-			// Could not connect to the database
-			System.out.println(e.getMessage());
-			return false;
-		}
-		return true;
-	}
-
-	public void insertRecord(String sqlString) {
-		try {
-			String insertQueryStatement = sqlString;
-
-			PreparedStatement = connection.prepareStatement(insertQueryStatement);
-
-			// execute insert SQL statement
-			PreparedStatement.executeUpdate();
-			System.out.println("Data Telah Ditambahkan");
-		} catch (
-
-		SQLException e) {
-			e.printStackTrace();
+		} catch (ClassNotFoundException e) {			
+			System.out.println("ClassNotFoundException : " + e.getMessage());			
+		} catch (SQLException e) {			
+			log.error("Tidak bisa melakukan koneksi ke server : " + e.getMessage());						
 		}
 	}
 
-	public void updateRecord(String sqlString) {
-		try {
-			String updateQueryStatement = sqlString;
-
-			PreparedStatement = connection.prepareStatement(updateQueryStatement);
-
-			// execute insert SQL statement
-			PreparedStatement.executeUpdate();
-			System.out.println("Data Telah Diubah");
-		} catch (
-
-		SQLException e) {
-			e.printStackTrace();
-		}
+	public void insertRecord(String sqlString) throws SQLException  {		
+		String insertQueryStatement = sqlString;
+		PreparedStatement = connection.prepareStatement(insertQueryStatement);
+		PreparedStatement.executeUpdate();
+} 
+	public void updateRecord(String sqlString) throws SQLException  {		
+		String updateQueryStatement = sqlString;
+		PreparedStatement = connection.prepareStatement(updateQueryStatement);		
+		PreparedStatement.executeUpdate();			
 	}
 
-	public void deleteRecord(String sqlString) {
-		try {
-			String deleteQueryStatement = sqlString;
-
-			PreparedStatement = connection.prepareStatement(deleteQueryStatement);
-
-			// execute insert SQL statement
-			PreparedStatement.executeUpdate();
-			System.out.println("Data Telah Dihapus");
-		} catch (
-
-		SQLException e) {
-			e.printStackTrace();
-		}
+	public void deleteRecord(String sqlString) throws SQLException  {		
+		String deleteQueryStatement = sqlString;
+		PreparedStatement = connection.prepareStatement(deleteQueryStatement);
+		PreparedStatement.executeUpdate();	
 	}
 
-	public ResultSet query(String sqlString) {
-		ResultSet rs = null;
-		try {
-			stmt = connection.createStatement();
-			rs = stmt.executeQuery(sqlString);
-		} catch (
-
-		SQLException e) {
-			e.printStackTrace();
-		}
+	public ResultSet query (String sqlString) throws SQLException {
+		stmt = connection.createStatement();
+		ResultSet rs = stmt.executeQuery(sqlString);	
 		return rs;
-	}
-	
-	public void closeConnection() throws Exception {
+	}	
+	public void closeConnection() throws SQLException {
 		connection.close();
 	}
 }

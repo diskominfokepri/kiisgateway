@@ -2,13 +2,18 @@
  * class untuk melakukan authentication user
  * @author reza
  */
-package di.go.kepriprov.kiisgateway.lib.auth;
+package id.go.kepriprov.kiisgateway.lib.auth;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.HashMap;
+
+import org.apache.log4j.Logger;
+import org.json.JSONObject;
 
 import id.go.kepriprov.kiisgateway.lib.Database;
-import id.go.kepriprov.kiisgateway.lib.Helper;
 public abstract class Authentication {
+	static Logger log = Logger.getLogger(AuthenticationHTTP.class.getName());
 	/**
 	 * username
 	 */
@@ -49,33 +54,24 @@ public abstract class Authentication {
 
 	/**
 	 * digunakan untuk mengecek username dan password
-	 * @param username
-	 * @param userpassword
-	 * @return boolean true or false
+	 * 
+	 * @return data user map
 	 * @throws Exception
 	 */
-	public boolean checkUsernameAndPassword() throws Exception {
-		boolean success = false;		
-		
-		String password2 = (String) Helper.createSHA1(this.userpassword);
-		password2 = (String) Helper.createMD5(password2);
-		password2 = (String) Helper.createSHA1(password2);
-		password2 = (String) Helper.createMD5(password2);
-		Database db = new Database();
-		ResultSet hasil = db.query("SELECT * FROM mst_user WHERE id_user = '" + this.username + "' and password = '" + password2 + "'");
-		String user = "";
-		String pass = "";
-		//String opd = "";
-		if (hasil.next()) {
-			user = hasil.getString("id_user");
-			pass = hasil.getString("password");
-			//opd = 
-		}
-		if (user.equals(username) && pass.equals(password2)) {
-			success = true;
-			//simpan ke log
-		}
-		return success;
+	public HashMap<String,String> getDataUser(){
+		HashMap<String,String> datauser = new HashMap<String, String>();
+		String sql = "SELECT id_user,password FROM mst_user WHERE id_user = '" + this.username+"'";
+		try {
+			Database db = new Database();
+			ResultSet hasil = db.query(sql);			
+			if (hasil.next()) {
+				datauser.put("id_user", hasil.getString("id_user"));
+				datauser.put("password", hasil.getString("password"));			 
+			}
+		} catch (SQLException e) {			
+			log.info("Query perintah SQL gagal dengan pesan : "+e.getMessage());
+		} catch (NullPointerException e) {}
+		return datauser;
 	}
 	/**
 	 * gidunakan untuk mengecek apakah username dan password kosong
@@ -89,4 +85,10 @@ public abstract class Authentication {
 		}
 		return success;
 	}
+	/**
+	 * digunakan untuk mengecek apakah semuanya sudah valid. 
+	 * setiap aktivitas disini akan dicatat
+	 * @return Response JSON
+	 */
+	abstract public JSONObject isValid ();
 }

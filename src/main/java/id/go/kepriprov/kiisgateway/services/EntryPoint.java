@@ -7,10 +7,13 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
-import di.go.kepriprov.kiisgateway.lib.auth.Authentication;
-import di.go.kepriprov.kiisgateway.lib.auth.AuthenticationHTTP;
-import id.go.kepriprov.kiisgateway.lib.Database;
+import org.json.JSONObject;
+
+import id.go.kepriprov.kiisgateway.lib.auth.Authentication;
+import id.go.kepriprov.kiisgateway.lib.auth.AuthenticationHTTP;
 
 
 @Path("/")
@@ -24,31 +27,16 @@ public class EntryPoint {
 
 	@GET
 	@Path("/query")
-	@Produces(MediaType.TEXT_PLAIN)
-	public String query(@Context HttpHeaders httpHeaders) throws Exception {		
-		try {
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response query(@Context HttpHeaders httpHeaders) throws Exception{
+		Response response;
+		Authentication auth = new AuthenticationHTTP(httpHeaders);	
+		JSONObject dataJSON = auth.isValid();
+		int connection = (Integer) dataJSON.get("connection");
+		if (connection > 0) {
 			
-			Authentication auth = new AuthenticationHTTP(httpHeaders);
-			Database db = new Database();
-			if (auth.isUsernameAndPasswordEmpty()) {
-				db.insertRecord("INSERT INTO tb_log VALUES (activity,user) VALUES ('Seseorang mencoba untuk login kedalam sistem dengan IP "+ auth.getUsername() + "', '" + auth.getUsername() + "')");
-				return "usernamekosong";
-			} else {
-				if (auth.checkUsernameAndPassword()) {
-					return "loginberhasil";
-				} else {
-					String sql = " INSERT INTO tb_log SET id=NULL,activity='User " + auth.getUsername() + " gagal melakukan login karena kesalahan username/password', user='"+ auth.getUsername() + "',times=NOW()";
-					db.insertRecord(sql);
-					return "logingagal";
-				}
-				
-			}
-
-		} catch (Exception e) {
-			return "requestgagal";
 		}
-
-				
+		response = Response.status(Status.OK).entity(dataJSON.toString()).build();
+		return response;		
 	}
-
 }
