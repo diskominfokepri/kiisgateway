@@ -8,7 +8,8 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 
-import id.go.kepriprov.kiisgateway.lib.Authentication;
+import di.go.kepriprov.kiisgateway.lib.auth.Authentication;
+import di.go.kepriprov.kiisgateway.lib.auth.AuthenticationHTTP;
 import id.go.kepriprov.kiisgateway.lib.Database;
 
 
@@ -24,25 +25,19 @@ public class EntryPoint {
 	@GET
 	@Path("/query")
 	@Produces(MediaType.TEXT_PLAIN)
-
-	// public String query(@HeaderParam("Username") String username,
-	// @HeaderParam("Password") String password) throws Exception {
-	public String query(@Context HttpHeaders httpHeaders) throws Exception {
-		String username = "";
-		String password = "";
+	public String query(@Context HttpHeaders httpHeaders) throws Exception {		
 		try {
-			username = httpHeaders.getRequestHeader("Username").get(0);
-			password = httpHeaders.getRequestHeader("Password").get(0);
-			Authentication auth = new Authentication();
+			
+			Authentication auth = new AuthenticationHTTP(httpHeaders);
 			Database db = new Database();
-			if (auth.isUsernameAndPasswordEmpty(username, password)) {
-				db.insertRecord("INSERT INTO tb_log VALUES (activity,user) VALUES ('Seseorang mencoba untuk login kedalam sistem dengan IP "+ username + "', '" + username + "')");
+			if (auth.isUsernameAndPasswordEmpty()) {
+				db.insertRecord("INSERT INTO tb_log VALUES (activity,user) VALUES ('Seseorang mencoba untuk login kedalam sistem dengan IP "+ auth.getUsername() + "', '" + auth.getUsername() + "')");
 				return "usernamekosong";
 			} else {
-				if (auth.checkUsernameAndPassword(username, password)) {
+				if (auth.checkUsernameAndPassword()) {
 					return "loginberhasil";
 				} else {
-					String sql = " INSERT INTO tb_log SET id=NULL,activity='User " + username+ " gagal melakukan login karena kesalahan username/password', user='"+ username + "',times=NOW()";
+					String sql = " INSERT INTO tb_log SET id=NULL,activity='User " + auth.getUsername() + " gagal melakukan login karena kesalahan username/password', user='"+ auth.getUsername() + "',times=NOW()";
 					db.insertRecord(sql);
 					return "logingagal";
 				}

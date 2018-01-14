@@ -4,11 +4,11 @@
 	<groupId>id.go.kepriprov.kiisgateway</groupId>
 	<artifactId>KIISGateway</artifactId>
 	<version>0.0.1</version>
-	<properties>
-		<!-- Adapt this to a version found on http://central.maven.org/maven2/org/eclipse/jetty/jetty-maven-plugin/ -->
+	<properties>		
 		<jettyVersion>9.3.9.v20160517</jettyVersion>
 		<jerseyVersion>2.7</jerseyVersion>
 		<mysqlVersion>6.0.6</mysqlVersion>
+		<jsonjavaVersion>20171018</jsonjavaVersion>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -46,10 +46,14 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<version>${mysqlVersion}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>${jsonjavaVersion}</version>
+		</dependency>
 	</dependencies>
 	<build>
-		<plugins>
-			
+		<plugins>			
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>exec-maven-plugin</artifactId>

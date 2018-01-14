@@ -1,4 +1,4 @@
-package id.go.kepriprov.kiisgateway.lib;
+package id.go.kepriprov.kiisgateway.lib.conf;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Properties;
+
+import id.go.kepriprov.kiisgateway.lib.Helper;
 
 public class Configuration {
 	private String configFile =Helper.getAppLocation()+"server.properties";
@@ -20,7 +22,7 @@ public class Configuration {
 			Properties properties = new Properties();			
 			properties.load(fileInput);			
 			fileInput.close();			
-			Enumeration enuKeys = properties.keys();			
+			Enumeration<?> enuKeys = properties.keys();			
 			config = new HashMap<String, String>();
 			
 			while (enuKeys.hasMoreElements()) {

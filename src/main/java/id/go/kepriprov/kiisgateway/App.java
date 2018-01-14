@@ -8,7 +8,7 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.glassfish.jersey.servlet.ServletContainer;
 
-import id.go.kepriprov.kiisgateway.lib.Configuration;
+import id.go.kepriprov.kiisgateway.lib.conf.Configuration;
 
 public class App {
 

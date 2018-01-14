@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import id.go.kepriprov.kiisgateway.lib.conf.Configuration;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
