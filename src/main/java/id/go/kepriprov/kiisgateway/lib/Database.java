@@ -27,7 +27,7 @@ public class Database {
 	public Database() throws SQLException {
 		driverName = "com.mysql.cj.jdbc.Driver";
 		Configuration config = new Configuration();
-		url = "jdbc:mysql://" + config.getDBHost() + ":" + config.getDBPort() + "/" + config.getDBName();
+		url = "jdbc:mysql://" + config.getDBHost() + ":" + config.getDBPort() + "/" + config.getDBName() + "?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
 		koneksi(config.getDBUser(), config.getDBPassword());
 	}	
 	public void koneksi(String Username, String Password) {
