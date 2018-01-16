@@ -46,7 +46,7 @@ public class AuthenticationHTTP extends Authentication {
 					activity ="User " + getUsername() + " gagal melakukan login karena kesalahan username/password";					
 					dataJSON.put("message", activity);
 				}				
-				String sql = " INSERT INTO tb_log SET id=NULL,activity='" + activity + "', user='"+ getUsername() + "',times=NOW()";
+				String sql = " INSERT INTO tb_activity SET id=NULL,activity='" + activity + "', user='"+ getUsername() + "',times=NOW()";
 				new Database().insertRecord(sql);
 			}else {
 				throw new Exception ("User " + getUsername() + " gagal melakukan login karena kesalahan username/password");
