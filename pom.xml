@@ -8,7 +8,7 @@
 		<jettyVersion>9.3.9.v20160517</jettyVersion>
 		<jerseyVersion>2.7</jerseyVersion>
 		<mysqlVersion>6.0.6</mysqlVersion>
-		<hiveVersion>6.0.6</hiveVersion>
+		<hiveVersion>2.3.2</hiveVersion>
 		<jsonjavaVersion>20171018</jsonjavaVersion>
 	</properties>
 	<dependencies>
