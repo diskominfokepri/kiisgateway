@@ -8,6 +8,7 @@
 		<jettyVersion>9.3.9.v20160517</jettyVersion>
 		<jerseyVersion>2.7</jerseyVersion>
 		<mysqlVersion>6.0.6</mysqlVersion>
+		<hiveVersion>6.0.6</hiveVersion>
 		<jsonjavaVersion>20171018</jsonjavaVersion>
 	</properties>
 	<dependencies>
@@ -45,6 +46,11 @@
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<version>${mysqlVersion}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.hive</groupId>
+			<artifactId>hive-jdbc</artifactId>
+			<version>${hiveVersion}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.json</groupId>
