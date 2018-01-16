@@ -12,4 +12,48 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
+import org.json.JSONObject;
+public class SendHeaderHTTP {
+
+	public static void main(String[] args) throws Exception {
+		// TODO Auto-generated method stub
+			sendGet();
+	}
+	
+	public static void sendGet () throws Exception {
+		String url = "";
+		
+		URL obj = new URL(url);
+		
+		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+
+		// optional default is GET
+		con.setRequestMethod("GET");
+		
+		//add request header
+		con.setRequestProperty("Username", "admin");
+		con.setRequestProperty("Password", "123456");
+		BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));	
+		String jsonText = readAll(in);
+		JSONObject json = null;
+		json = new JSONObject(jsonText);
+		int conn = (Integer)json.get("connection");
+		if (conn>0) {
+			System.out.print("sukses");
+		}
+		else {
+			System.out.print("gagal");
+		}
+	}	
+	public static String readAll(Reader rd) throws IOException {
+		StringBuilder sb = new StringBuilder();
+		int cp;
+		while ((cp = rd.read()) != -1) {
+			sb.append((char) cp);
+		}
+		return sb.toString();
+	}
+
+}
 ```
