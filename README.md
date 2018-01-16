@@ -1,7 +1,7 @@
 # KIISGateway
 KIISGateway adalah salah satu komponen dalam KIIS (Kepri Integrated Information System)
 
-## Mekanisme Otentikasi Rest KIIS Gateway 
+## Mekanisme Otentikasi Rest KIISGateway 
 Untuk mengakses layanan KIISBigData harus melakukan otentikasi terlebih dahulu, yang mana hasil outputnya dalam bentuk json. contoh implementasi dalam beberapa bahasa pemrograman.
 ### Java
 
