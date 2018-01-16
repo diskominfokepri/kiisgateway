@@ -32,8 +32,8 @@ public class SendHeaderHTTP {
 		con.setRequestMethod("GET");
 		
 		//add request header
-		con.setRequestProperty("Username", "admin");
-		con.setRequestProperty("Password", "123456");
+		con.setRequestProperty("Username", "");
+		con.setRequestProperty("Password", "");
 		BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));	
 		String jsonText = readAll(in);
 		JSONObject json = null;
