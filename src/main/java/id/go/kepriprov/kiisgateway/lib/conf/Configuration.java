@@ -40,20 +40,36 @@ public class Configuration {
 		int port = Integer.parseInt(config.get("jetty_port"));
 		return port;
 	}
-	public String getDBHost () {
-		return config.get("db_host");
+	public String getKIISmpDBHost () {
+		return config.get("kiismp_db_host");
 	}
-	public String getDBPort () {
-		return config.get("db_port");
+	public String getKIISmpDBPort () {
+		return config.get("kiismp_db_port");
 	}
-	public String getDBUser () {
-		return config.get("db_user");
+	public String getKIISmpDBUser () {
+		return config.get("kiismp_db_user");
 	}
-	public String getDBPassword () {
-		return config.get("db_password");
+	public String getKIISmpDBPassword () {
+		return config.get("kiismp_db_password");
 	}
-	public String getDBName () {
-		return config.get("db_name");
+	public String getKIISmpDBName () {
+		return config.get("kiismp_db_name");
+	}
+	
+	public String getKIISHiveDBHost () {
+		return config.get("kiishive_db_host");
+	}
+	public String getKIISHiveDBPort () {
+		return config.get("kiishive_db_port");
+	}	
+	public String getKIISHiveDBUser () {
+		return config.get("kiishive_db_user");
+	}
+	public String getKIISHiveDBPassword () {
+		return config.get("kiishive_db_password");
+	}
+	public String getKIISHiveDBName () {
+		return config.get("kiishive_db_name");
 	}
 
 }

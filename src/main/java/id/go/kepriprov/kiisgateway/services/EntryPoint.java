@@ -1,6 +1,7 @@
 package id.go.kepriprov.kiisgateway.services;
 
 
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -28,9 +29,9 @@ public class EntryPoint {
 	@GET
 	@Path("/query")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response query(@Context HttpHeaders httpHeaders) throws Exception{
+	public Response query(@Context HttpHeaders httpHeaders,@Context HttpServletRequest request) throws Exception{
 		Response response;
-		Authentication auth = new AuthenticationHTTP(httpHeaders);	
+		Authentication auth = new AuthenticationHTTP(httpHeaders,request);	
 		JSONObject dataJSON = auth.isValid();
 		int connection = (Integer) dataJSON.get("connection");
 		if (connection > 0) {

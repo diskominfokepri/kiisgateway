@@ -11,7 +11,7 @@ import java.util.HashMap;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
-import id.go.kepriprov.kiisgateway.lib.Database;
+import id.go.kepriprov.kiisgateway.lib.data.MySQLDatabase;
 public abstract class Authentication {
 	/**
 	 * username
@@ -61,7 +61,7 @@ public abstract class Authentication {
 		HashMap<String,String> datauser = new HashMap<String, String>();
 		String sql = "SELECT apiuser,apipassword FROM tm_sistem_informasi WHERE apiuser = '" + this.username+"'";
 		try {
-			Database db = new Database();
+			MySQLDatabase db = new MySQLDatabase();
 			ResultSet hasil = db.query(sql);			
 			if (hasil.next()) {
 				datauser.put("apiuser", hasil.getString("apiuser"));
