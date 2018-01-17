@@ -48,11 +48,6 @@
 			<version>${mysqlVersion}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.apache.hive</groupId>
-			<artifactId>hive-jdbc</artifactId>
-			<version>${hiveVersion}</version>
-		</dependency>
-		<dependency>
 			<groupId>org.json</groupId>
 			<artifactId>json</artifactId>
 			<version>${jsonjavaVersion}</version>
