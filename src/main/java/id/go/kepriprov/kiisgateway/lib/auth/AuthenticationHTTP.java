@@ -38,7 +38,7 @@ public class AuthenticationHTTP extends Authentication {
 				password2 = (String) Helper.createSHA1(password2);
 				password2 = (String) Helper.createMD5(password2);
 				
-				if (datauser.get("id_user").equals(username) && datauser.get("password").equals(password2)) {
+				if (datauser.get("apiuser").equals(username) && datauser.get("apipassword").equals(password2)) {
 					activity ="User " + getUsername() + " berhasil melakukan login";
 					dataJSON.put("connection", 1);	
 					dataJSON.put("message", activity);

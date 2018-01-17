@@ -60,13 +60,13 @@ public abstract class Authentication {
 	 */
 	public HashMap<String,String> getDataUser(){
 		HashMap<String,String> datauser = new HashMap<String, String>();
-		String sql = "SELECT id_user,password FROM mst_user WHERE id_user = '" + this.username+"'";
+		String sql = "SELECT apiuser,apipassword FROM tm_sistem_informasi WHERE apiuser = '" + this.username+"'";
 		try {
 			Database db = new Database();
 			ResultSet hasil = db.query(sql);			
 			if (hasil.next()) {
-				datauser.put("id_user", hasil.getString("id_user"));
-				datauser.put("password", hasil.getString("password"));			 
+				datauser.put("apiuser", hasil.getString("apiuser"));
+				datauser.put("apipassword", hasil.getString("apipassword"));			 
 			}
 		} catch (SQLException e) {			
 			log.info("Query perintah SQL gagal dengan pesan : "+e.getMessage());
