@@ -13,7 +13,6 @@ import org.json.JSONObject;
 
 import id.go.kepriprov.kiisgateway.lib.Database;
 public abstract class Authentication {
-	static Logger log = Logger.getLogger(AuthenticationHTTP.class.getName());
 	/**
 	 * username
 	 */
@@ -68,8 +67,8 @@ public abstract class Authentication {
 				datauser.put("apiuser", hasil.getString("apiuser"));
 				datauser.put("apipassword", hasil.getString("apipassword"));			 
 			}
-		} catch (SQLException e) {			
-			log.info("Query perintah SQL gagal dengan pesan : "+e.getMessage());
+		} catch (SQLException e) {
+			Logger.getLogger(Authentication.class.getName()).info("Query perintah SQL gagal dengan pesan : "+e.getMessage());
 		} catch (NullPointerException e) {}
 		return datauser;
 	}

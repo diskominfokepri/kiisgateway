@@ -10,14 +10,13 @@ import org.json.JSONObject;
 import id.go.kepriprov.kiisgateway.lib.Database;
 import id.go.kepriprov.kiisgateway.lib.Helper;
 
-public class AuthenticationHTTP extends Authentication {
-	static Logger log = Logger.getLogger(AuthenticationHTTP.class.getName());
+public class AuthenticationHTTP extends Authentication {	
 	public AuthenticationHTTP (HttpHeaders httpHeaders) {
 		try {
 			username = httpHeaders.getRequestHeader("Username").get(0);
 			userpassword = httpHeaders.getRequestHeader("Password").get(0);
-		}catch (NullPointerException e) {			
-			log.info("header username dan password kosong");
+		}catch (NullPointerException e) {	
+			Logger.getLogger(AuthenticationHTTP.class.getName()).info("header username dan password kosong");
 		}
 		
 	}
@@ -53,7 +52,7 @@ public class AuthenticationHTTP extends Authentication {
 			}
 		}catch (Exception e) {
 			dataJSON.put("message",e.getMessage());
-			log.info(e.getMessage());
+			Logger.getLogger(AuthenticationHTTP.class.getName()).info(e.getMessage());
 		}
 		return dataJSON;		
 	}
