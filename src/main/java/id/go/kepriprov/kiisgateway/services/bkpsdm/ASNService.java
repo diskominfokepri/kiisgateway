@@ -40,11 +40,10 @@ public class ASNService {
 		int connection = (Integer) dataJSON.get("connection");
 		if (connection > 0) {
 			HiveDatabase hive = new HiveDatabase();
-			ResultSet result = hive.query("select * from test");			
-			while (result.next()) {
-				 System.out.println(result.getString(1));
-			}
-			dataJSON.put("nip", nip);
+			ResultSet result = hive.query("SELECT * FROM biodata WHERE nip_baru='"+nip+"'");			
+			if (result.next()) {
+				dataJSON.put("nama", result.getString("nama"));
+			}			
 		}
 		response = Response.status(Status.OK).entity(dataJSON.toString()).build();
 		return response;		
