@@ -2,7 +2,7 @@ package id.go.kepriprov.kiisgateway.lib.data;
 
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import org.apache.log4j.Logger;
+
 import id.go.kepriprov.kiisgateway.lib.conf.Configuration;
 
 public class MySQLDatabase extends Database {
@@ -14,10 +14,10 @@ public class MySQLDatabase extends Database {
 		try {
 			Class.forName(driverName);			
 			connection = DriverManager.getConnection(url, config.getKIISmpDBUser(), config.getKIISmpDBPassword());
-		} catch (ClassNotFoundException e) {			
-			System.out.println("ClassNotFoundException : " + e.getMessage());			
+		} catch (ClassNotFoundException e) {
+			consoleMessage(ClassNotFoundException.class.getName(), e.getMessage(), 2);
 		} catch (SQLException e) {
-			Logger.getLogger(MySQLDatabase.class.getName()).error("Tidak bisa melakukan koneksi ke server : " + e.getMessage());
+			consoleMessage(MySQLDatabase.class.getName(), "Tidak bisa melakukan koneksi ke server : " + e.getMessage(), 2);
 		}
 	}	
 	

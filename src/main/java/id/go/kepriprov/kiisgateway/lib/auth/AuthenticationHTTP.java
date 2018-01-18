@@ -13,13 +13,15 @@ import id.go.kepriprov.kiisgateway.lib.data.MySQLDatabase;
 
 public class AuthenticationHTTP extends Authentication {
 	private String ipaddress;
+	private String user_agent;
 	public AuthenticationHTTP (HttpHeaders httpHeaders, HttpServletRequest request) {
 		try {
 			username = httpHeaders.getRequestHeader("Username").get(0);
 			userpassword = httpHeaders.getRequestHeader("Password").get(0);
 			ipaddress = Helper.getIPAddressFrom(request, true);
-		}catch (NullPointerException e) {	
-			Logger.getLogger(AuthenticationHTTP.class.getName()).info("header username dan password kosong");
+			user_agent = request.getHeader("User-Agent");
+		}catch (NullPointerException e) {
+			consoleMessage(Authentication.class.getName(), "header username dan password kosong", 1);
 		}
 		
 	}
@@ -48,7 +50,7 @@ public class AuthenticationHTTP extends Authentication {
 					activity ="User " + getUsername() + " gagal melakukan login karena kesalahan username/password";					
 					dataJSON.put("message", activity);
 				}				
-				String sql = " INSERT INTO tb_activity SET id=NULL,activity='" + activity + "', user='"+ getUsername() + "',times=NOW(),ip_address='"+ipaddress+"'";
+				String sql = " INSERT INTO tb_activity SET id=NULL,activity='" + activity + "', user='"+ getUsername() + "',times=NOW(),ip_address='"+ipaddress+"',user_agent='"+user_agent+"'";
 				new MySQLDatabase().insertRecord(sql);
 			}else {
 				throw new Exception ("User " + getUsername() + " gagal melakukan login karena kesalahan username/password");

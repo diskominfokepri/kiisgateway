@@ -1,8 +1,5 @@
 package id.go.kepriprov.kiisgateway;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
@@ -29,9 +26,8 @@ public class App {
             server.start();
             server.join();
         } catch (Exception ex) {
-            Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex.getMessage());
         } finally {
-
             server.destroy();
         }		
 		

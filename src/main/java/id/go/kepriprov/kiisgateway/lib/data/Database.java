@@ -6,7 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-class Database {
+import id.go.kepriprov.kiisgateway.lib.BaseKiis;
+
+class Database extends BaseKiis{
 	protected Connection connection;
 
 	protected String driverName;

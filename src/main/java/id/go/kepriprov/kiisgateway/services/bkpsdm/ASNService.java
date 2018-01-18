@@ -44,7 +44,7 @@ public class ASNService {
 			while (result.next()) {
 				 System.out.println(result.getString(1));
 			}
-			
+			dataJSON.put("nip", nip);
 		}
 		response = Response.status(Status.OK).entity(dataJSON.toString()).build();
 		return response;		

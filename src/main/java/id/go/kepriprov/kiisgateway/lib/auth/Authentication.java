@@ -8,11 +8,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 
-import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
+import id.go.kepriprov.kiisgateway.lib.BaseKiis;
 import id.go.kepriprov.kiisgateway.lib.data.MySQLDatabase;
-public abstract class Authentication {
+public abstract class Authentication extends BaseKiis{
 	/**
 	 * username
 	 */
@@ -68,7 +68,7 @@ public abstract class Authentication {
 				datauser.put("apipassword", hasil.getString("apipassword"));			 
 			}
 		} catch (SQLException e) {
-			Logger.getLogger(Authentication.class.getName()).info("Query perintah SQL gagal dengan pesan : "+e.getMessage());
+			consoleMessage(Authentication.class.getName(), "Query perintah SQL gagal dengan pesan : "+e.getMessage(), 1);
 		} catch (NullPointerException e) {}
 		return datauser;
 	}
