@@ -14,6 +14,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import id.go.kepriprov.kiisgateway.lib.auth.AuthenticationHTTP;
@@ -40,12 +41,11 @@ public class ASNService {
 		JSONObject dataJSON = auth.isValid();
 		int connection = (Integer) dataJSON.get("connection");
 		if (connection > 0) {
-			String activity = null;		
+			String activity = null,message=null;		
 			HiveDatabase hive = new HiveDatabase();
-			ResultSet result = hive.query("SELECT * FROM biodata WHERE nip_baru='"+nip+"'");
-			String message;
-			if (result.next()) {
-				message="Data ASN dengan NIP ("+nip+" ditemukan.";
+			ResultSet result = hive.query("SELECT * FROM bkpsdm_silat_biodata_s WHERE nip_baru='"+nip+"'");
+			
+			if (result.next()) {				
 				dataJSON.put("pegawai_id", result.getString("pegawai_id"));
 				dataJSON.put("skpd_id", result.getString("skpd_id"));
 				dataJSON.put("nip_baru", result.getString("nip_baru"));
@@ -70,6 +70,7 @@ public class ASNService {
 				dataJSON.put("aktif", result.getString("aktif"));
 				dataJSON.put("tgl_input", result.getString("tgl_input"));
 				
+				message="Data ASN dengan NIP ("+nip+" ditemukan.";
 				activity="melakukan query terhadap tabel biodata dengan NIP "+nip+".OUTPUTNYA : "+dataJSON.toString();
 				
 			}else {
@@ -89,13 +90,14 @@ public class ASNService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response queryBiodataSeluruhASN(@Context HttpHeaders httpHeaders,@Context HttpServletRequest request) throws Exception{
 		Response response=null;
-		Authentication auth = new AuthenticationHTTP(httpHeaders,request);	
+		AuthenticationHTTP auth = new AuthenticationHTTP(httpHeaders,request);	
 		JSONObject dataJSON = auth.isValid();
 		JSONArray arrayJSON = new JSONArray();
 		int connection = (Integer) dataJSON.get("connection");
 		if (connection > 0) {
+			String activity = null;	
 			HiveDatabase hive = new HiveDatabase();
-			ResultSet result = hive.query("select * from biodata order by pegawai_id");	
+			ResultSet result = hive.query("SELECT * FROM bkpsdm_silat_biodata_s ORDER BY pegawai_id");	
 			while (result.next()) {
 				JSONObject dataUntukArray = new JSONObject();
 				dataUntukArray.put("pegawai_id", result.getString("pegawai_id"));
@@ -120,8 +122,14 @@ public class ASNService {
 				dataUntukArray.put("no_hp", result.getString("no_hp"));
 				dataUntukArray.put("email", result.getString("email"));
 				dataUntukArray.put("aktif", result.getString("aktif"));
-				arrayJSON.put(dataUntukArray);
+				arrayJSON.put(dataUntukArray);				
+				
 			}		
+			dataJSON.put("payload", arrayJSON);
+			activity="melakukan query terhadap seluruh biodata ASN";
+			
+			String sql = " INSERT INTO tb_activity SET id=NULL,activity='" + activity + "', user='"+ auth.getUsername() + "',times=NOW(),ip_address='"+auth.getIPAddress()+"',user_agent='"+auth.getUseragent()+"'";
+			new MySQLDatabase().insertRecord(sql);
 		}
 		response = Response.status(Status.OK).entity(arrayJSON.toString()).build();
 		return response;		
