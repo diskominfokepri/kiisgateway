@@ -21,7 +21,7 @@ public class AuthenticationHTTP extends Authentication {
 			ipaddress = Helper.getIPAddressFrom(request, true);
 			user_agent = request.getHeader("User-Agent");
 		}catch (NullPointerException e) {
-			consoleMessage(Authentication.class.getName(), "header username dan password kosong", 1);
+			consoleMessage(Authentication.class.getName(), "header username dan password belum terbentuk", 1);
 		}
 		
 	}
@@ -53,7 +53,7 @@ public class AuthenticationHTTP extends Authentication {
 				String sql = " INSERT INTO tb_activity SET id=NULL,activity='" + activity + "', user='"+ getUsername() + "',times=NOW(),ip_address='"+ipaddress+"',user_agent='"+user_agent+"'";
 				new MySQLDatabase().insertRecord(sql);
 			}else {
-				throw new Exception ("User " + getUsername() + " gagal melakukan login karena kesalahan username/password");
+				throw new Exception ("User " + getUsername() + " gagal melakukan login karena kesalahan username/password (bila merasa sudah benar, hubungi admin.)");
 			}
 		}catch (Exception e) {
 			dataJSON.put("message",e.getMessage());

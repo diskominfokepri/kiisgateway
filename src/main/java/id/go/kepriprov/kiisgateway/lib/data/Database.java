@@ -36,10 +36,16 @@ class Database extends BaseKiis{
 		PreparedStatement.executeUpdate();	
 	}
 
-	public ResultSet query (String sqlString) throws SQLException {
-		stmt = connection.createStatement();
-		ResultSet rs = stmt.executeQuery(sqlString);	
+	public ResultSet query (String sqlString) {
+		ResultSet rs = null;
+		try {
+			stmt = connection.createStatement();
+			rs = stmt.executeQuery(sqlString);			
+		} catch (SQLException e) {
+			consoleMessage(Database.class.getName(), "Tidak bisa mengeksekusi perintah sql \""+sqlString+"\" karena " + e.getMessage(), 2);
+		}	
 		return rs;
+		
 	}	
 	public void closeConnection() throws SQLException {
 		connection.close();
