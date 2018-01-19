@@ -61,4 +61,10 @@ public class AuthenticationHTTP extends Authentication {
 		}
 		return dataJSON;		
 	}
+	public String getUseragent() {
+		return user_agent;
+	}
+	public String getIPAddress() {
+		return ipaddress;
+	}
 }

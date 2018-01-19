@@ -16,9 +16,9 @@ import javax.ws.rs.core.Response.Status;
 
 import org.json.JSONObject;
 
-import id.go.kepriprov.kiisgateway.lib.auth.Authentication;
 import id.go.kepriprov.kiisgateway.lib.auth.AuthenticationHTTP;
 import id.go.kepriprov.kiisgateway.lib.data.HiveDatabase;
+import id.go.kepriprov.kiisgateway.lib.data.MySQLDatabase;
 
 
 @Path("/asn")
@@ -35,16 +35,51 @@ public class ASNService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response queryBiodataSeorangASN(@QueryParam ("nip") String nip,@Context HttpHeaders httpHeaders,@Context HttpServletRequest request) throws Exception{
 		Response response=null;
-		Authentication auth = new AuthenticationHTTP(httpHeaders,request);	
+		AuthenticationHTTP auth = new AuthenticationHTTP(httpHeaders,request);	
 		JSONObject dataJSON = auth.isValid();
 		int connection = (Integer) dataJSON.get("connection");
 		if (connection > 0) {
+			String activity = null;		
 			HiveDatabase hive = new HiveDatabase();
-			ResultSet result = hive.query("SELECT * FROM biodata WHERE nip_baru='"+nip+"'");			
+			ResultSet result = hive.query("SELECT * FROM biodata WHERE nip_baru='"+nip+"'");
+			String message;
 			if (result.next()) {
-				dataJSON.put("nama", result.getString("nama"));
-			}			
-		}
+				message="Data ASN dengan NIP ("+nip+" ditemukan.";
+				dataJSON.put("pegawai_id", result.getString("pegawai_id"));
+				dataJSON.put("skpd_id", result.getString("skpd_id"));
+				dataJSON.put("nip_baru", result.getString("nip_baru"));
+				dataJSON.put("nip_lama", result.getString("nip_lama"));
+				dataJSON.put("nuptk", result.getString("nuptk"));
+				dataJSON.put("status_kep_id", result.getString("status_kep_id"));
+				dataJSON.put("kppn_id", result.getString("kppn_id"));
+				dataJSON.put("gelar_depan", result.getString("gelar_depan"));
+				dataJSON.put("gelar_belakang", result.getString("gelar_belakang"));
+				dataJSON.put("tempat_lahir", result.getString("tempat_lahir"));
+				dataJSON.put("nik", result.getString("nik"));
+				dataJSON.put("jk", result.getString("jk"));
+				dataJSON.put("agama_id", result.getString("agama_id"));
+				dataJSON.put("status_kawin_id", result.getString("status_kawin_id"));
+				dataJSON.put("alamat", result.getString("alamat"));
+				dataJSON.put("domisili_id", result.getString("domisili_id"));
+				dataJSON.put("alamat_domisili", result.getString("alamat_domisili"));
+				dataJSON.put("kode_pos", result.getString("kode_pos"));
+				dataJSON.put("kode_pos_domisili", result.getString("kode_pos_domisili"));
+				dataJSON.put("no_hp", result.getString("no_hp"));
+				dataJSON.put("email", result.getString("email"));
+				dataJSON.put("aktif", result.getString("aktif"));
+				dataJSON.put("tgl_input", result.getString("tgl_input"));
+				
+				activity="melakukan query terhadap tabel biodata dengan NIP "+nip+".OUTPUTNYA : "+dataJSON.toString();
+				
+			}else {
+				message="Data ASN dengan NIP ("+nip+" tidak ditemukan.";
+				activity="Data ASN dengan NIP ("+nip+" tidak ditemukan.";
+			}
+			String sql = " INSERT INTO tb_activity SET id=NULL,activity='" + activity + "', user='"+ auth.getUsername() + "',times=NOW(),ip_address='"+auth.getIPAddress()+"',user_agent='"+auth.getUseragent()+"'";
+			new MySQLDatabase().insertRecord(sql);
+			dataJSON.put("message",message);			
+		}						
+		
 		response = Response.status(Status.OK).entity(dataJSON.toString()).build();
 		return response;		
 	}
