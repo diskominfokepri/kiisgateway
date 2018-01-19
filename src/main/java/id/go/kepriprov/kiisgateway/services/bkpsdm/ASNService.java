@@ -27,6 +27,7 @@ public class ASNService {
 	@GET
 	@Produces(MediaType.TEXT_PLAIN)
 	public String entry() {
+
 		return "BKPSDM Services";
 	}
 
@@ -81,6 +82,48 @@ public class ASNService {
 		}						
 		
 		response = Response.status(Status.OK).entity(dataJSON.toString()).build();
+		return response;		
+	}
+	@GET
+	@Path("/biodata/seluruhasn")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response queryBiodataSeluruhASN(@Context HttpHeaders httpHeaders,@Context HttpServletRequest request) throws Exception{
+		Response response=null;
+		Authentication auth = new AuthenticationHTTP(httpHeaders,request);	
+		JSONObject dataJSON = auth.isValid();
+		JSONArray arrayJSON = new JSONArray();
+		int connection = (Integer) dataJSON.get("connection");
+		if (connection > 0) {
+			HiveDatabase hive = new HiveDatabase();
+			ResultSet result = hive.query("select * from biodata order by pegawai_id");	
+			while (result.next()) {
+				JSONObject dataUntukArray = new JSONObject();
+				dataUntukArray.put("pegawai_id", result.getString("pegawai_id"));
+				dataUntukArray.put("skpd_id", result.getString("skpd_id"));
+				dataUntukArray.put("nip_lama", result.getString("nip_lama"));
+				dataUntukArray.put("nuptk", result.getString("nuptk"));
+				dataUntukArray.put("status_kep_id", result.getString("status_kep_id"));
+				dataUntukArray.put("kppn_id", result.getString("kppn_id"));
+				dataUntukArray.put("nama", result.getString("nama"));
+				dataUntukArray.put("gelar_depan", result.getString("gelar_depan"));
+				dataUntukArray.put("gelar_belakang", result.getString("gelar_belakang"));
+				dataUntukArray.put("tempat_lahir", result.getString("tempat_lahir"));
+				dataUntukArray.put("nik", result.getString("nik"));
+				dataUntukArray.put("jk", result.getString("jk"));
+				dataUntukArray.put("agama_id", result.getString("agama_id"));
+				dataUntukArray.put("status_kawin_id", result.getString("status_kawin_id"));
+				dataUntukArray.put("alamat", result.getString("alamat"));
+				dataUntukArray.put("domisili_id", result.getString("domisili_id"));
+				dataUntukArray.put("alamat_domisili", result.getString("alamat_domisili"));
+				dataUntukArray.put("kode_pos", result.getString("kode_pos"));
+				dataUntukArray.put("kode_pos_domisili", result.getString("kode_pos_domisili"));
+				dataUntukArray.put("no_hp", result.getString("no_hp"));
+				dataUntukArray.put("email", result.getString("email"));
+				dataUntukArray.put("aktif", result.getString("aktif"));
+				arrayJSON.put(dataUntukArray);
+			}		
+		}
+		response = Response.status(Status.OK).entity(arrayJSON.toString()).build();
 		return response;		
 	}
 }
