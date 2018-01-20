@@ -5,7 +5,6 @@ import java.util.HashMap;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.HttpHeaders;
 
-import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
 import id.go.kepriprov.kiisgateway.lib.Helper;
@@ -57,7 +56,7 @@ public class AuthenticationHTTP extends Authentication {
 			}
 		}catch (Exception e) {
 			dataJSON.put("message",e.getMessage());
-			Logger.getLogger(AuthenticationHTTP.class.getName()).info(e.getMessage());
+			consoleMessage(AuthenticationHTTP.class.getName(), e.getMessage()+" solusi cek di tabel", 2);
 		}
 		return dataJSON;		
 	}
