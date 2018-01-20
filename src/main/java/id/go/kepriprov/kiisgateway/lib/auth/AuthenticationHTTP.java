@@ -56,7 +56,7 @@ public class AuthenticationHTTP extends Authentication {
 			}
 		}catch (Exception e) {
 			dataJSON.put("message",e.getMessage());
-			consoleMessage(AuthenticationHTTP.class.getName(), e.getMessage()+" solusi cek di tabel", 2);
+			consoleMessage(AuthenticationHTTP.class.getName(), e.getMessage()+" solusi cek di database.", 2);
 		}
 		return dataJSON;		
 	}

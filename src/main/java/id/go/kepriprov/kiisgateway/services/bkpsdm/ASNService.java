@@ -17,13 +17,14 @@ import javax.ws.rs.core.Response.Status;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import id.go.kepriprov.kiisgateway.lib.BaseKiis;
 import id.go.kepriprov.kiisgateway.lib.auth.AuthenticationHTTP;
 import id.go.kepriprov.kiisgateway.lib.data.HiveDatabase;
 import id.go.kepriprov.kiisgateway.lib.data.MySQLDatabase;
 
 
 @Path("/asn")
-public class ASNService {
+public class ASNService extends BaseKiis {
 
 	@GET
 	@Produces(MediaType.TEXT_PLAIN)
@@ -74,13 +75,14 @@ public class ASNService {
 				activity="melakukan query terhadap tabel biodata dengan NIP "+nip+".OUTPUTNYA : "+dataJSON.toString();
 				
 			}else {
-				message="Data ASN dengan NIP ("+nip+" tidak ditemukan.";
-				activity="Data ASN dengan NIP ("+nip+" tidak ditemukan.";
+				message="Data ASN dengan NIP ("+nip+") tidak ditemukan.";
+				activity="Data ASN dengan NIP ("+nip+") tidak ditemukan.";
 			}
 			String sql = " INSERT INTO tb_activity SET id=NULL,activity='" + activity + "', user='"+ auth.getUsername() + "',times=NOW(),ip_address='"+auth.getIPAddress()+"',user_agent='"+auth.getUseragent()+"'";
 			new MySQLDatabase().insertRecord(sql);
-			dataJSON.put("message",message);			
-		}						
+			dataJSON.put("message",message);	
+			consoleMessage(ASNService.class.getName(), "User "+auth.getUsername() + " Melakukan query "+activity, 2);
+		}					
 		
 		response = Response.status(Status.OK).entity(dataJSON.toString()).build();
 		return response;		
