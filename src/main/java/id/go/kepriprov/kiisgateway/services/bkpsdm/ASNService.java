@@ -99,7 +99,7 @@ public class ASNService extends BaseKiis {
 			}
 			
 		}					
-		consoleMessage(ASNService.class.getName(), "User "+auth.getUsername() + " Melakukan query "+activity, level);
+		consoleMessage(ASNService.class.getName(), "User "+auth.getUsername() +activity, level);
 		response = Response.status(Status.OK).entity(dataJSON.toString()).build();
 		return response;		
 	}
@@ -113,14 +113,18 @@ public class ASNService extends BaseKiis {
 		JSONObject dataJSON = auth.isValid();
 		JSONArray arrayJSON = new JSONArray();
 		int connection = (Integer) dataJSON.get("connection");
-		if (connection > 0) {
-			String activity = null,sql;		
+		String activity = null,message=null,sql;
+		if (connection > 0) {			
 			try {
 				HiveDatabase hive = new HiveDatabase();
 				if (StringUtils.equals(offset, "") || StringUtils.equals(limit,"") || StringUtils.equals(offset, null) || StringUtils.equals(limit,null)) {
-					sql = "SELECT * FROM bkpsdm_silat_biodata_s ORDER BY pegawai_id";
+					sql = "SELECT * FROM bkpsdm_silat_biodata_s ORDER BY pegawai_id ASC";
+					activity="melakukan query terhadap seluruh biodata ASN";	
+					message="melakukan query terhadap seluruh biodata ASN";
 				}else {
 					sql = "SELECT * FROM bkpsdm_silat_biodata_s ORDER BY pegawai_id LIMIT "+offset+","+limit;
+					activity="melakukan query terhadap seluruh biodata ASN dengan offset "+offset+" limit "+limit;	
+					message="melakukan query terhadap seluruh biodata ASN dengan offset "+offset+" limit "+limit;
 				}
 				ResultSet result = hive.query(sql);				
 				while (result.next()) {
@@ -150,14 +154,52 @@ public class ASNService extends BaseKiis {
 					arrayJSON.put(dataUntukArray);
 				}	
 				dataJSON.put("payload", arrayJSON);
-				activity="melakukan query terhadap seluruh biodata ASN";			
+				
 				sql = " INSERT INTO tb_activity SET id=NULL,activity='" + activity + "', user='"+ auth.getUsername() + "',times=NOW(),ip_address='"+auth.getIPAddress()+"',user_agent='"+auth.getUseragent()+"'";
 				new MySQLDatabase().insertRecord(sql);
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
-				consoleMessage(ASNService.class.getName(), "User "+auth.getUsername() + " Melakukan query "+activity, level);			
+				message="internal server error";		
+				activity=e.getMessage();
 			}			
 		}
+		dataJSON.put("message", message);
+		consoleMessage(ASNService.class.getName(), "User "+auth.getUsername() +activity, level);
+		response = Response.status(Status.OK).entity(dataJSON.toString()).build();
+		return response;		
+	}
+	@GET
+	@Path("/jumlah")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response queryJumlahASN(@Context HttpHeaders httpHeaders,@Context HttpServletRequest request){
+		int level = 1;
+		Response response=null;
+		AuthenticationHTTP auth = new AuthenticationHTTP(httpHeaders,request);	
+		JSONObject dataJSON = auth.isValid();
+		int connection = (Integer) dataJSON.get("connection");
+		String activity = null,message=null,sql;
+		if (connection > 0) {			
+			try {
+				HiveDatabase hive = new HiveDatabase();
+				sql = "SELECT COUNT(pegawai_id) AS jumlahasn FROM bkpsdm_silat_biodata_s";
+				ResultSet result = hive.query(sql);			
+				if (result.next()) {
+					JSONObject dataasn = new JSONObject();	
+					dataasn.put("jumlah", result.getString("jumlahasn"));					
+					dataJSON.put("payload", dataasn);
+				}						
+				activity="melakukan query mengetahui jumlah asn";	
+				message="jumlah asn";
+				sql = " INSERT INTO tb_activity SET id=NULL,activity='" + activity + "', user='"+ auth.getUsername() + "',times=NOW(),ip_address='"+auth.getIPAddress()+"',user_agent='"+auth.getUseragent()+"'";
+				new MySQLDatabase().insertRecord(sql);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				message="internal server error";		
+				activity=e.getMessage();
+			}			
+		}
+		dataJSON.put("message", message);
+		consoleMessage(ASNService.class.getName(), "User "+auth.getUsername() +activity, level);
 		response = Response.status(Status.OK).entity(dataJSON.toString()).build();
 		return response;		
 	}
