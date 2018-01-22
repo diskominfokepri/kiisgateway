@@ -22,7 +22,6 @@ import org.json.JSONObject;
 
 import id.go.kepriprov.kiisgateway.lib.BaseKiis;
 import id.go.kepriprov.kiisgateway.lib.auth.AuthenticationHTTP;
-import id.go.kepriprov.kiisgateway.lib.data.HiveDatabase;
 import id.go.kepriprov.kiisgateway.lib.data.MySQLDatabase;
 
 
@@ -49,8 +48,9 @@ public class ASNService extends BaseKiis {
 		String activity = null,message=null;
 		if (connection > 0) {				
 			try {
-				HiveDatabase hive = new HiveDatabase();
-				ResultSet result = hive.query("SELECT * FROM bkpsdm_silat_biodata_s WHERE nip_baru='"+nip+"'");				
+				//HiveDatabase db = new HiveDatabase();
+				MySQLDatabase db = new MySQLDatabase ("localhost","3306","kiisbigdata_temp","reza","98komfino");
+				ResultSet result = db.query("SELECT * FROM bkpsdm_silat_biodata_s WHERE nip_baru='"+nip+"'");				
 				if (result.next()) {
 					JSONObject dataasn = new JSONObject();				
 					dataasn.put("pegawai_id", result.getString("pegawai_id"));
@@ -116,7 +116,8 @@ public class ASNService extends BaseKiis {
 		String activity = null,message=null,sql;
 		if (connection > 0) {			
 			try {
-				HiveDatabase hive = new HiveDatabase();
+				//HiveDatabase db = new HiveDatabase();
+				MySQLDatabase db = new MySQLDatabase ("localhost","3306","kiisbigdata_temp","reza","98komfino");
 				if (StringUtils.equals(offset, "") || StringUtils.equals(limit,"") || StringUtils.equals(offset, null) || StringUtils.equals(limit,null)) {
 					sql = "SELECT * FROM bkpsdm_silat_biodata_s ORDER BY pegawai_id ASC";
 					activity="melakukan query terhadap seluruh biodata ASN";	
@@ -126,7 +127,7 @@ public class ASNService extends BaseKiis {
 					activity="melakukan query terhadap seluruh biodata ASN dengan offset "+offset+" limit "+limit;	
 					message="melakukan query terhadap seluruh biodata ASN dengan offset "+offset+" limit "+limit;
 				}
-				ResultSet result = hive.query(sql);				
+				ResultSet result = db.query(sql);				
 				while (result.next()) {
 					JSONObject dataUntukArray = new JSONObject();
 					dataUntukArray.put("pegawai_id", result.getString("pegawai_id"));
@@ -180,9 +181,10 @@ public class ASNService extends BaseKiis {
 		String activity = null,message=null,sql;
 		if (connection > 0) {			
 			try {
-				HiveDatabase hive = new HiveDatabase();
+				//HiveDatabase db = new HiveDatabase();
+				MySQLDatabase db = new MySQLDatabase ("localhost","3306","kiisbigdata_temp","reza","98komfino");
 				sql = "SELECT COUNT(pegawai_id) AS jumlahasn FROM bkpsdm_silat_biodata_s";
-				ResultSet result = hive.query(sql);			
+				ResultSet result = db.query(sql);			
 				if (result.next()) {
 					JSONObject dataasn = new JSONObject();	
 					dataasn.put("jumlah", result.getString("jumlahasn"));					
