@@ -36,40 +36,100 @@ public class Configuration {
 			e.printStackTrace();
 		}		
 	}
+	/**
+	 * Web server Jetty Port
+	 * @return int port
+	 */
 	public int getJettyPort () {
 		int port = Integer.parseInt(config.get("jetty_port"));
 		return port;
 	}
+	
+	/**
+	 * KIIS Monitoring and Management db host
+	 * @return String db host
+	 */
 	public String getKIISmpDBHost () {
 		return config.get("kiismp_db_host");
 	}
+	/**
+	 * KIIS Monitoring and Management db port
+	 * @return String db port
+	 */
 	public String getKIISmpDBPort () {
 		return config.get("kiismp_db_port");
 	}
+	/**
+	 * KIIS Monitoring and Management db user
+	 * @return String db user
+	 */
 	public String getKIISmpDBUser () {
 		return config.get("kiismp_db_user");
 	}
+	/**
+	 * KIIS Monitoring and Management db password
+	 * @return String db password
+	 */
 	public String getKIISmpDBPassword () {
 		return config.get("kiismp_db_password");
 	}
+	/**
+	 * KIIS Monitoring and Management db name
+	 * @return String db name
+	 */
 	public String getKIISmpDBName () {
 		return config.get("kiismp_db_name");
-	}
-	
-	public String getKIISHiveDBHost () {
-		return config.get("kiishive_db_host");
-	}
-	public String getKIISHiveDBPort () {
-		return config.get("kiishive_db_port");
 	}	
-	public String getKIISHiveDBUser () {
-		return config.get("kiishive_db_user");
+	
+	/**
+	 * KIIS Transactional db host
+	 * @return String db host
+	 */
+	public String getKIISTransDBHost () {
+		return config.get("kiistrans_db_host");
 	}
-	public String getKIISHiveDBPassword () {
-		return config.get("kiishive_db_password");
+	/**
+	 * KIIS Transactional db port
+	 * @return String db port
+	 */
+	public String getKIISTransDBPort () {
+		return config.get("kiistrans_db_port");
 	}
-	public String getKIISHiveDBName () {
-		return config.get("kiishive_db_name");
+	/**
+	 * KIIS Transactional db user
+	 * @return String db user
+	 */
+	public String getKIISTransDBUser () {
+		return config.get("kiistrans_db_user");
 	}
+	/**
+	 * KIIS Transactional db password
+	 * @return String db password
+	 */
+	public String getKIISTransDBPassword () {
+		return config.get("kiistrans_db_password");
+	}
+	/**
+	 * KIIS Transactional db name
+	 * @return String db name
+	 */
+	public String getKIISTransDBName () {
+		return config.get("kiistrans_db_name");
+	}	
+	
+	/**
+	 * KIIS Pipeline kafka host
+	 * @return String kafka host
+	 */
+	public String getKIISKafkaHost () {
+		return config.get("kiiskafka_host");
+	}
+	/**
+	 * KIIS Pipeline kafka port
+	 * @return String kafka port
+	 */
+	public String getKIISKafkaPort () {
+		return config.get("kiiskafka_port");
+	}	
 
 }

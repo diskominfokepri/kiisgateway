@@ -50,7 +50,10 @@ public class AuthenticationHTTP extends Authentication {
 					dataJSON.put("message", activity);
 				}				
 				String sql = " INSERT INTO tb_activity SET id=NULL,activity='" + activity + "', user='"+ getUsername() + "',times=NOW(),ip_address='"+ipaddress+"',user_agent='"+user_agent+"'";
-				new MySQLDatabase().insertRecord(sql);
+				
+				MySQLDatabase db2 = new MySQLDatabase();
+				db2.insertRecord(sql);
+				db2.closeConnection();
 			}else {
 				throw new Exception ("User " + getUsername() + " gagal melakukan login karena kesalahan username/password (bila merasa sudah benar, hubungi admin.)");
 			}

@@ -73,7 +73,7 @@ public abstract class Authentication extends BaseKiis{
 		return datauser;
 	}
 	/**
-	 * gidunakan untuk mengecek apakah username dan password kosong
+	 * digunakan untuk mengecek apakah username dan password kosong
 	 * @return true of false
 	 */
 	public boolean isUsernameAndPasswordEmpty() {

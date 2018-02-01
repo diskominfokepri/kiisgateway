@@ -9,7 +9,7 @@ public class MySQLDatabase extends Database {
 	public MySQLDatabase() throws SQLException {
 		driverName = "com.mysql.cj.jdbc.Driver";
 		Configuration config = new Configuration();
-		url = "jdbc:mysql://" + config.getKIISmpDBHost() + ":" + config.getKIISmpDBPort() + "/" + config.getKIISmpDBName() + "?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";	
+		url = "jdbc:mysql://" + config.getKIISmpDBHost() + ":" + config.getKIISmpDBPort() + "/" + config.getKIISmpDBName() + "?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&useSSL=false";	
 		
 		try {
 			Class.forName(driverName);			
@@ -22,7 +22,7 @@ public class MySQLDatabase extends Database {
 	}	
 	public MySQLDatabase(String host,String port,String dbname, String username, String password) throws SQLException {
 		driverName = "com.mysql.cj.jdbc.Driver";
-		url = "jdbc:mysql://" + host + ":" + port + "/" + dbname + "?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";	
+		url = "jdbc:mysql://" + host + ":" + port + "/" + dbname + "?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&useSSL=false";	
 		
 		try {
 			Class.forName(driverName);			

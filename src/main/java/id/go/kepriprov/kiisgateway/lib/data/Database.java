@@ -19,7 +19,18 @@ class Database extends BaseKiis{
 	
 	protected Statement stmt;	
 	
-	public void insertRecord(String sqlString) throws SQLException  {		
+	public void insertRecord(String sqlString) throws SQLException  {
+		/*try {
+			String insertQueryStatement = sqlString;
+			PreparedStatement = connection.prepareStatement(insertQueryStatement);
+			PreparedStatement.executeUpdate();
+		} finally {
+			if (!connection.isClosed()) try { 
+				connection.close();
+			} catch (SQLException logOrIgnore) {
+				
+			}
+		}*/
 		String insertQueryStatement = sqlString;
 		PreparedStatement = connection.prepareStatement(insertQueryStatement);
 		PreparedStatement.executeUpdate();
@@ -38,16 +49,37 @@ class Database extends BaseKiis{
 
 	public ResultSet query (String sqlString) {
 		ResultSet rs = null;
-		try {
-			stmt = connection.createStatement();
-			rs = stmt.executeQuery(sqlString);			
+		/*try {
+			try {
+				stmt = connection.createStatement();
+				rs = stmt.executeQuery(sqlString);
+			} finally {
+				if (!connection.isClosed()) try { 
+					connection.close();
+				} catch (SQLException logOrIgnore) {
+					
+				}
+			}		
 		} catch (SQLException e) {
 			consoleMessage(Database.class.getName(), "Tidak bisa mengeksekusi perintah sql \""+sqlString+"\" karena " + e.getMessage(), 2);
-		}	
+		}*/
+		try {
+			stmt = connection.createStatement();
+			rs = stmt.executeQuery(sqlString);
+		} catch (SQLException e) {
+			consoleMessage(Database.class.getName(), "Tidak bisa mengeksekusi perintah sql \""+sqlString+"\" karena " + e.getMessage(), 2);
+		}
 		return rs;
-		
 	}	
+	
 	public void closeConnection() throws SQLException {
-		connection.close();
+		if (!connection.isClosed()) {
+			try { 
+				connection.close();
+			} catch (SQLException logOrIgnore) {
+				
+			}
+		}
+			
 	}
 }

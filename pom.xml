@@ -10,6 +10,7 @@
 		<mysqlVersion>6.0.6</mysqlVersion>
 		<hiveVersion>2.3.2</hiveVersion>
 		<hadoopVersion>3.0.0</hadoopVersion>
+		<kafkaVersion>1.0.0</kafkaVersion>
 		<jsonjavaVersion>20171018</jsonjavaVersion>
 	</properties>
 	<dependencies>
@@ -58,6 +59,11 @@
 					<artifactId>*</artifactId>
 				</exclusion>
 			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.kafka</groupId>
+			<artifactId>kafka-clients</artifactId>
+			<version>${kafkaVersion}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.json</groupId>
