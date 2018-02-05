@@ -6,6 +6,7 @@ import org.eclipse.jetty.servlet.ServletHolder;
 import org.glassfish.jersey.servlet.ServletContainer;
 
 import id.go.kepriprov.kiisgateway.lib.conf.Configuration;
+import id.go.kepriprov.kiisgateway.lib.errorhandler.CustomErrorHandlerJetty;
 
 public class App {
 
@@ -17,7 +18,9 @@ public class App {
 		ServletContextHandler ctx = new ServletContextHandler(ServletContextHandler.NO_SESSIONS);
 		
 		ctx.setContextPath("/");
+		ctx.setErrorHandler(new CustomErrorHandlerJetty());
         server.setHandler(ctx);
+        
         
         ServletHolder serHol = ctx.addServlet(ServletContainer.class, "/*");
         serHol.setInitOrder(1);
