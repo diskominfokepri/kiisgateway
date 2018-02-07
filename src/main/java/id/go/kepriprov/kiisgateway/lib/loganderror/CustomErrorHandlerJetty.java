@@ -1,4 +1,4 @@
-package id.go.kepriprov.kiisgateway.lib.errorhandler;
+package id.go.kepriprov.kiisgateway.lib.loganderror;
 
 import java.io.IOException;
 

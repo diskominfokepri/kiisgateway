@@ -6,7 +6,8 @@ import org.eclipse.jetty.servlet.ServletHolder;
 import org.glassfish.jersey.servlet.ServletContainer;
 
 import id.go.kepriprov.kiisgateway.lib.conf.Configuration;
-import id.go.kepriprov.kiisgateway.lib.errorhandler.CustomErrorHandlerJetty;
+import id.go.kepriprov.kiisgateway.lib.loganderror.AccessLogHandler;
+import id.go.kepriprov.kiisgateway.lib.loganderror.CustomErrorHandlerJetty;
 
 public class App {
 
@@ -26,6 +27,7 @@ public class App {
         serHol.setInitOrder(1);
         serHol.setInitParameter("jersey.config.server.provider.packages","id.go.kepriprov.kiisgateway.services");
         try {
+        	server.setRequestLog(new AccessLogHandler());
             server.start();
             server.join();
         } catch (Exception ex) {
